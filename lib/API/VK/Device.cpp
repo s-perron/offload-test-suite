@@ -1724,7 +1724,9 @@ public:
       uint64_t CurrentOffset = 0;
       for (int I = 0; I < B.OutputProps.MipLevels; ++I) {
         VkBufferImageCopy Region = {};
-        Region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        Region.imageSubresource.aspectMask = B.Format == DataFormat::Depth32
+                                                 ? VK_IMAGE_ASPECT_DEPTH_BIT
+                                                 : VK_IMAGE_ASPECT_COLOR_BIT;
         Region.imageSubresource.mipLevel = I;
         Region.imageSubresource.baseArrayLayer = 0;
         Region.imageSubresource.layerCount = 1;
@@ -1739,7 +1741,9 @@ public:
       }
 
       VkImageSubresourceRange SubRange = {};
-      SubRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+      SubRange.aspectMask = B.Format == DataFormat::Depth32
+                                ? VK_IMAGE_ASPECT_DEPTH_BIT
+                                : VK_IMAGE_ASPECT_COLOR_BIT;
       SubRange.baseMipLevel = 0;
       SubRange.levelCount = B.OutputProps.MipLevels;
       SubRange.layerCount = 1;
@@ -1800,7 +1804,9 @@ public:
     if (R.isImage()) {
       const offloadtest::Buffer &B = *R.BufferPtr;
       VkImageSubresourceRange SubRange = {};
-      SubRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+      SubRange.aspectMask = B.Format == DataFormat::Depth32
+                                ? VK_IMAGE_ASPECT_DEPTH_BIT
+                                : VK_IMAGE_ASPECT_COLOR_BIT;
       SubRange.baseMipLevel = 0;
       SubRange.levelCount = B.OutputProps.MipLevels;
       SubRange.layerCount = 1;
@@ -1826,7 +1832,9 @@ public:
       uint64_t CurrentOffset = 0;
       for (int I = 0; I < B.OutputProps.MipLevels; ++I) {
         VkBufferImageCopy Region = {};
-        Region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        Region.imageSubresource.aspectMask = B.Format == DataFormat::Depth32
+                                                 ? VK_IMAGE_ASPECT_DEPTH_BIT
+                                                 : VK_IMAGE_ASPECT_COLOR_BIT;
         Region.imageSubresource.mipLevel = I;
         Region.imageSubresource.baseArrayLayer = 0;
         Region.imageSubresource.layerCount = 1;
