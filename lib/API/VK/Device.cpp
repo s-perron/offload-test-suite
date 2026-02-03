@@ -759,7 +759,7 @@ public:
     const Sampler &S = *R.SamplerPtr;
     SamplerInfo.magFilter = getVKFilter(S.MagFilter);
     SamplerInfo.minFilter = getVKFilter(S.MinFilter);
-    SamplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+    SamplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
     SamplerInfo.addressModeU = getVKAddressMode(S.Address);
     SamplerInfo.addressModeV = getVKAddressMode(S.Address);
     SamplerInfo.addressModeW = getVKAddressMode(S.Address);
