@@ -15,11 +15,16 @@ void main(uint3 GTid : SV_GroupThreadID) {
   // the clamped LOD will be 2.0.
   float2 uv1 = 0.25 + float2(GTid.xy) * 2.0;
 
+  float lod0 = Tex.CalculateLevelOfDetail(Samp, uv0);
+  float lod1 = Tex.CalculateLevelOfDetail(Samp, uv1);
+  float lod2 = Tex.CalculateLevelOfDetailUnclamped(Samp, uv0);
+  float lod3 = Tex.CalculateLevelOfDetailUnclamped(Samp, uv1);
+
   if (all(GTid.xy == 0)) {
-    Out[0] = Tex.CalculateLevelOfDetail(Samp, uv0);
-    Out[1] = Tex.CalculateLevelOfDetail(Samp, uv1);
-    Out[2] = Tex.CalculateLevelOfDetailUnclamped(Samp, uv0);
-    Out[3] = Tex.CalculateLevelOfDetailUnclamped(Samp, uv1);
+    Out[0] = lod0;
+    Out[1] = lod1;
+    Out[2] = lod2;
+    Out[3] = lod3;
   }
 }
 
