@@ -87,10 +87,10 @@ DescriptorSets:
 
 Results:
   - Result: FilterTest
-    Rule: BufferFloatULP
+    Rule: BufferFloatEpsilon
     Actual: Out
     Expected: Expected
-    ULPT: 4
+    Epsilon: 0.01
 ...
 #--- end
 
