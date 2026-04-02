@@ -1,0 +1,57 @@
+#--- source.hlsl
+
+struct S {
+  float f;
+};
+
+[[vk::binding(5, 0)]] ConstantBuffer<S> CB;
+
+RWStructuredBuffer<float> Out : register(u1);
+
+[numthreads(1,1,1)]
+void main() {
+  Out[0] = CB.f;
+}
+
+
+//--- pipeline.yaml
+
+---
+Shaders:
+  - Stage: Compute
+    Entry: main
+    DispatchSize: [1, 1, 1]
+Buffers:
+  - Name: CB
+    Format: Hex32
+    Data: [ 0x3f800000 ]
+  - Name: Out
+    Format: Hex32
+    Stride: 4
+    FillSize: 4
+DescriptorSets:
+  - Resources:
+    - Name: Out
+      Kind: RWStructuredBuffer
+      DirectXBinding:
+        Register: 1
+        Space: 0
+      VulkanBinding:
+        Binding: 1
+    - Name: CB
+      Kind: ConstantBuffer
+      DirectXBinding:
+        Register: 0
+        Space: 0
+      VulkanBinding:
+        Binding: 5
+...
+#--- end
+
+# RUN: split-file %s %t
+# RUN: %dxc_target -fvk-use-dx-layout -T cs_6_5 -Fo %t.o %t/source.hlsl
+# RUN: %offloader %t/pipeline.yaml %t.o | FileCheck %s
+
+# CHECK: - Name: Out
+# CHECK:   Format: Hex32
+# CHECK:   Data: [ 0x3F800000 ]
